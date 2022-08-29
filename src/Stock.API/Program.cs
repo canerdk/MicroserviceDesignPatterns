@@ -1,4 +1,11 @@
+using MassTransit;
+using Microsoft.EntityFrameworkCore;
+using Shared;
+using Stock.API.Consumers;
+using Stock.API.DataAccess;
+
 var builder = WebApplication.CreateBuilder(args);
+
 
 // Add services to the container.
 
@@ -7,7 +14,33 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+builder.Services.AddDbContext<AppDbContext>(opt =>
+{
+    opt.UseInMemoryDatabase("StockDB");
+});
+
+builder.Services.AddMassTransit(x =>
+{
+    x.AddConsumer<OrderCreatedEventConsumer>();
+    x.UsingRabbitMq((context, cfg) =>
+    {
+        cfg.Host(builder.Configuration.GetConnectionString("RabbitMQ"));
+        cfg.ReceiveEndpoint(RabbitMQSettings.StockOrderCreateEventQueueName, e =>
+        {
+            e.ConfigureConsumer<OrderCreatedEventConsumer>(context);
+        });
+    });
+});
+
 var app = builder.Build();
+
+using (var scope = app.Services.CreateScope())
+{
+    var context = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+    context.Stocks.Add(new Stock.API.Models.Stock() { Id = 1, ProductId = 1, Count = 100 });
+    context.Stocks.Add(new Stock.API.Models.Stock() { Id = 2, ProductId = 2, Count = 100 });
+    context.SaveChanges();
+}
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
