@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Shared.Messages;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -11,5 +12,6 @@ namespace Shared.Events
         public int OrderId { get; set; }
         public string BuyerId { get; set; }
         public string Message { get; set; }
+        public IEnumerable<OrderItemMessage> OrderItems { get; set; }
     }
 }

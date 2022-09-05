@@ -8,9 +8,9 @@ namespace Order.API.Consumers
     public class StockNotReservedEventConsumer : IConsumer<StockNotReservedEvent>
     {
         private readonly AppDbContext _context;
-        private readonly ILogger<PaymentCompletedEventConsumer> _logger;
+        private readonly ILogger<StockNotReservedEventConsumer> _logger;
 
-        public StockNotReservedEventConsumer(AppDbContext context, ILogger<PaymentCompletedEventConsumer> logger)
+        public StockNotReservedEventConsumer(AppDbContext context, ILogger<StockNotReservedEventConsumer> logger)
         {
             _context = context;
             _logger = logger;

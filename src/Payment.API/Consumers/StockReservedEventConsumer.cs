@@ -38,7 +38,8 @@ namespace Payment.API.Consumers
                 {
                     BuyerId = context.Message.BuyerId,
                     OrderId = context.Message.OrderId,
-                    Message = "Not enough money"
+                    Message = "Not enough money",
+                    OrderItems = context.Message.OrderItems
                 };
 
                 await _publishEndpoint.Publish(paymentFailedEvent);

@@ -8,9 +8,9 @@ namespace Order.API.Consumers
     public class PaymentFailedEventConsumer : IConsumer<PaymentFailedEvent>
     {
         private readonly AppDbContext _context;
-        private readonly ILogger<PaymentCompletedEventConsumer> _logger;
+        private readonly ILogger<PaymentFailedEventConsumer> _logger;
 
-        public PaymentFailedEventConsumer(AppDbContext context, ILogger<PaymentCompletedEventConsumer> logger)
+        public PaymentFailedEventConsumer(AppDbContext context, ILogger<PaymentFailedEventConsumer> logger)
         {
             _context = context;
             _logger = logger;
