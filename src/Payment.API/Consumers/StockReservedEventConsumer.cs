@@ -22,13 +22,13 @@ namespace Payment.API.Consumers
             {
                 _logger.LogInformation($"{context.Message.Payment.TotalPrice} TL was withdrawn from credit card for user id: {context.Message.BuyerId}");
 
-                var paymentSuccessEvent = new PaymentSuccessedEvent()
+                var paymentCompletedEvent = new PaymentCompletedEvent()
                 {
                     BuyerId = context.Message.BuyerId,
                     OrderId = context.Message.OrderId
                 };
 
-                await _publishEndpoint.Publish(paymentSuccessEvent);
+                await _publishEndpoint.Publish(paymentCompletedEvent);
             }
             else
             {
